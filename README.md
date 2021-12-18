@@ -15,11 +15,35 @@ Abstract Django models for soft removal
 $ pip install django-soft-remover
 ```
 
-### Usage
+### Example of use
 
 ```python
+from django.db import models
 
+from soft_remover.models import SoftRemovableModel, SoftRestorableModel
+
+
+class ManyUniqueTogetherRem(SoftRemovableModel):
+    category = models.CharField(max_length=32)
+    name = models.CharField(max_length=32)
+    tag = models.CharField(max_length=32)
+    value = models.PositiveSmallIntegerField()
+
+    class Meta:
+        unique_together = (('category', 'name', 'remver'), ('category', 'tag', 'remver'))
+
+
+class ManyUniqueTogetherRes(SoftRestorableModel):
+    category = models.CharField(max_length=32)
+    name = models.CharField(max_length=32)
+    tag = models.CharField(max_length=32)
+    value = models.PositiveSmallIntegerField()
+
+    class Meta:
+        unique_together = (('category', 'name'), ('category', 'tag'))
 ```
+
+See more examples in [test models](https://github.com/pikhovkin/django-soft-remover/blob/master/soft_remover/tests/models.py).
 
 ### License
 
