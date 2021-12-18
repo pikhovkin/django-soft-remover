@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='django-soft-remover',
-    version='0.1.0',
+    version='0.2.0',
     description='Abstract Django models for soft removal',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
