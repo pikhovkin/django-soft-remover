@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='django-soft-remover',
-    version='0.2.1',
+    version='0.3.0',
     description='Abstract Django models for soft removal',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -19,7 +19,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        'Django>=3.0,<4.0'
+        'Django>=3.0,<4.2'
     ],
     python_requires='>=3.8.*, <4.0.*',
     license='MIT',
@@ -31,6 +31,7 @@ setup(
         'Framework :: Django :: 3.1',
         'Framework :: Django :: 3.2',
         'Framework :: Django :: 4.0',
+        'Framework :: Django :: 4.1',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
@@ -38,6 +39,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     keywords=[
         'django',
