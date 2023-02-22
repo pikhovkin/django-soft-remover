@@ -24,15 +24,29 @@ class TestSoftRemove(TestCase):
         self.assertTrue(SimpleRem.objects.all().count() == 0)
         self.assertTrue(SimpleRem.objects.removed().count() == 3)
 
+        SimpleRem.objects.create(name='TestName')
+
+        SimpleRem.objects.all().delete()
+
+        self.assertTrue(SimpleRem.objects.all().count() == 0)
+        self.assertTrue(SimpleRem.objects.removed().count() == 4)
+
     def test_unique(self):
-        obj = SimpleUniqueRem.objects.create(name='TestName')
+        obj = SimpleUniqueRem.objects.create(name='TestName1')
         obj.delete()
 
         with self.assertRaises(IntegrityError), transaction.atomic():
-            SimpleUniqueRem.objects.create(name='TestName')
+            SimpleUniqueRem.objects.create(name='TestName1')
 
         self.assertTrue(SimpleUniqueRem.objects.all().count() == 0)
         self.assertTrue(SimpleUniqueRem.objects.removed().count() == 1)
+
+        SimpleUniqueRem.objects.create(name='TestName2')
+
+        SimpleUniqueRem.objects.all().delete()
+
+        self.assertTrue(SimpleUniqueRem.objects.all().count() == 0)
+        self.assertTrue(SimpleUniqueRem.objects.removed().count() == 2)
 
     def test_unique_together(self):
         obj1 = UniqueTogetherRem.objects.create(category='TestCategory', name='TestName1', value=0)
@@ -60,17 +74,29 @@ class TestSoftRemove(TestCase):
         self.assertTrue(UniqueTogetherRem.objects.all().count() == 1)
         self.assertTrue(UniqueTogetherRem.objects.removed().count() == 4)
 
+        UniqueTogetherRem.objects.all().delete()
+
+        self.assertTrue(UniqueTogetherRem.objects.all().count() == 0)
+        self.assertTrue(UniqueTogetherRem.objects.removed().count() == 5)
+
     def test_many_unique(self):
-        obj = ManyUniqueRem.objects.create(name='TestName', tag='tag1')
+        obj = ManyUniqueRem.objects.create(name='TestName1', tag='tag11')
         obj.delete()
 
         with self.assertRaises(IntegrityError), transaction.atomic():
-            ManyUniqueRem.objects.create(name='TestName', tag='tag2')
+            ManyUniqueRem.objects.create(name='TestName1', tag='tag12')
         with self.assertRaises(IntegrityError), transaction.atomic():
-            ManyUniqueRem.objects.create(name='TestName2', tag='tag1')
+            ManyUniqueRem.objects.create(name='TestName2', tag='tag11')
 
         self.assertTrue(ManyUniqueRem.objects.all().count() == 0)
         self.assertTrue(ManyUniqueRem.objects.removed().count() == 1)
+
+        ManyUniqueRem.objects.create(name='TestName2', tag='tag21')
+
+        ManyUniqueRem.objects.all().delete()
+
+        self.assertTrue(ManyUniqueRem.objects.all().count() == 0)
+        self.assertTrue(ManyUniqueRem.objects.removed().count() == 2)
 
     def test_many_unique_together(self):
         obj1 = ManyUniqueTogetherRem.objects.create(category='TestCategory', name='TestName1', tag='tag1', value=0)
@@ -105,3 +131,8 @@ class TestSoftRemove(TestCase):
 
         self.assertTrue(ManyUniqueTogetherRem.objects.all().count() == 1)
         self.assertTrue(ManyUniqueTogetherRem.objects.removed().count() == 4)
+
+        ManyUniqueTogetherRem.objects.all().delete()
+
+        self.assertTrue(ManyUniqueTogetherRem.objects.all().count() == 0)
+        self.assertTrue(ManyUniqueTogetherRem.objects.removed().count() == 5)

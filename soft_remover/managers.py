@@ -10,7 +10,8 @@ __all__ = (
 
 class SoftRemovableQuerySet(QuerySet):
     def delete(self):
-        self.update(is_removed=True)
+        for obj in self:
+            obj.delete()
 
 
 class SoftRestorableQuerySet(SoftRemovableQuerySet):

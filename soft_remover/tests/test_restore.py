@@ -24,6 +24,13 @@ class TestSoftRestore(TestCase):
         self.assertTrue(SimpleRes.objects.all().count() == 0)
         self.assertTrue(SimpleRes.objects.removed().count() == 3)
 
+        SimpleRes.objects.create(name='TestName')
+
+        SimpleRes.objects.all().delete()
+
+        self.assertTrue(SimpleRes.objects.all().count() == 0)
+        self.assertTrue(SimpleRes.objects.removed().count() == 4)
+
     def test_unique(self):
         obj = SimpleUniqueRes.objects.create(name='TestName')
         obj.delete()
@@ -35,6 +42,11 @@ class TestSoftRestore(TestCase):
 
         self.assertTrue(SimpleUniqueRes.objects.all().count() == 1)
         self.assertTrue(SimpleUniqueRes.objects.removed().count() == 0)
+
+        SimpleUniqueRes.objects.all().delete()
+
+        self.assertTrue(SimpleUniqueRes.objects.all().count() == 0)
+        self.assertTrue(SimpleUniqueRes.objects.removed().count() == 1)
 
     def test_unique_together(self):
         obj1 = UniqueTogetherRes.objects.create(category='TestCategory', name='TestName1', value=0)
@@ -61,6 +73,11 @@ class TestSoftRestore(TestCase):
 
         self.assertTrue(UniqueTogetherRes.objects.all().count() == 1)
         self.assertTrue(UniqueTogetherRes.objects.removed().count() == 1)
+
+        UniqueTogetherRes.objects.all().delete()
+
+        self.assertTrue(UniqueTogetherRes.objects.all().count() == 0)
+        self.assertTrue(UniqueTogetherRes.objects.removed().count() == 2)
 
     def test_many_unique(self):
         obj = ManyUniqueRes.objects.create(name='TestName', tag='tag1')
@@ -100,6 +117,11 @@ class TestSoftRestore(TestCase):
         self.assertTrue(ManyUniqueRes.objects.removed().count() == 1)
         self.assertTrue(ManyUniqueRes.objects.all().first().tag == 'tag2')
 
+        ManyUniqueRes.objects.all().delete()
+
+        self.assertTrue(ManyUniqueRes.objects.all().count() == 0)
+        self.assertTrue(ManyUniqueRes.objects.removed().count() == 2)
+
     def test_many_unique_together(self):
         obj1 = ManyUniqueTogetherRes.objects.create(category='TestCategory', name='TestName1', tag='tag1', value=0)
         obj2 = ManyUniqueTogetherRes.objects.create(category='TestCategory', name='TestName2', tag='tag2', value=0)
@@ -134,6 +156,11 @@ class TestSoftRestore(TestCase):
         self.assertTrue(ManyUniqueTogetherRes.objects.all().count() == 1)
         self.assertTrue(ManyUniqueTogetherRes.objects.removed().count() == 1)
 
+        ManyUniqueTogetherRes.objects.all().delete()
+
+        self.assertTrue(ManyUniqueTogetherRes.objects.all().count() == 0)
+        self.assertTrue(ManyUniqueTogetherRes.objects.removed().count() == 2)
+
     def test_restore_together(self):
         obj = RestoreTogetherRes.objects.create(name='TestName')
         obj.delete()
@@ -145,6 +172,13 @@ class TestSoftRestore(TestCase):
         self.assertTrue(RestoreTogetherRes.objects.removed().count() == 0)
 
         obj.delete()
+
+        self.assertTrue(RestoreTogetherRes.objects.all().count() == 0)
+        self.assertTrue(RestoreTogetherRes.objects.removed().count() == 1)
+
+        RestoreTogetherRes.objects.create(name='TestName')
+
+        RestoreTogetherRes.objects.all().delete()
 
         self.assertTrue(RestoreTogetherRes.objects.all().count() == 0)
         self.assertTrue(RestoreTogetherRes.objects.removed().count() == 1)
@@ -166,3 +200,8 @@ class TestSoftRestore(TestCase):
 
         self.assertTrue(ManyRestoreTogetherRes.objects.all().count() == 1)
         self.assertTrue(ManyRestoreTogetherRes.objects.removed().count() == 1)
+
+        ManyRestoreTogetherRes.objects.all().delete()
+
+        self.assertTrue(ManyRestoreTogetherRes.objects.all().count() == 0)
+        self.assertTrue(ManyRestoreTogetherRes.objects.removed().count() == 2)
