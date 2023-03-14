@@ -47,11 +47,12 @@ class BaseSoftRemovableModel(models.Model):
         self.is_removed = True
         self.save(using=using)
 
+    def delete_fully(self, using=None, keep_parents=False):
+        super().delete(using=using, keep_parents=keep_parents)
+
 
 class SoftRemovableModel(BaseSoftRemovableModel):
     remver = models.PositiveIntegerField(_('Removal version'), default=0, editable=False)
-
-    objects = SoftRemovableManager()
 
     class Meta:
         abstract = True

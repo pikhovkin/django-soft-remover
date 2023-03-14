@@ -30,6 +30,26 @@ class TestSoftRemove(TestCase):
 
         self.assertTrue(SimpleRem.objects.all().count() == 0)
         self.assertTrue(SimpleRem.objects.removed().count() == 4)
+        self.assertTrue(SimpleRem.all_objects.all().count() == 4)
+
+        SimpleRem.objects.create(name='TestName')
+
+        self.assertTrue(SimpleRem.objects.all().count() == 1)
+        self.assertTrue(SimpleRem.objects.removed().count() == 4)
+        self.assertTrue(SimpleRem.all_objects.all().count() == 5)
+
+        SimpleRem.objects.first().delete_fully()
+
+        self.assertTrue(SimpleRem.objects.all().count() == 0)
+        self.assertTrue(SimpleRem.objects.removed().count() == 4)
+        self.assertTrue(SimpleRem.all_objects.all().count() == 4)
+
+        SimpleRem.objects.all().delete_fully()
+        SimpleRem.objects.removed().delete_fully()
+
+        self.assertTrue(SimpleRem.objects.all().count() == 0)
+        self.assertTrue(SimpleRem.objects.removed().count() == 0)
+        self.assertTrue(SimpleRem.all_objects.all().count() == 0)
 
     def test_unique(self):
         obj = SimpleUniqueRem.objects.create(name='TestName1')
@@ -47,6 +67,26 @@ class TestSoftRemove(TestCase):
 
         self.assertTrue(SimpleUniqueRem.objects.all().count() == 0)
         self.assertTrue(SimpleUniqueRem.objects.removed().count() == 2)
+        self.assertTrue(SimpleUniqueRem.all_objects.all().count() == 2)
+
+        SimpleUniqueRem.objects.create(name='TestName3')
+
+        self.assertTrue(SimpleUniqueRem.objects.all().count() == 1)
+        self.assertTrue(SimpleUniqueRem.objects.removed().count() == 2)
+        self.assertTrue(SimpleUniqueRem.all_objects.all().count() == 3)
+
+        SimpleUniqueRem.objects.first().delete_fully()
+
+        self.assertTrue(SimpleUniqueRem.objects.all().count() == 0)
+        self.assertTrue(SimpleUniqueRem.objects.removed().count() == 2)
+        self.assertTrue(SimpleUniqueRem.all_objects.all().count() == 2)
+
+        SimpleUniqueRem.objects.all().delete_fully()
+        SimpleUniqueRem.objects.removed().delete_fully()
+
+        self.assertTrue(SimpleUniqueRem.objects.all().count() == 0)
+        self.assertTrue(SimpleUniqueRem.objects.removed().count() == 0)
+        self.assertTrue(SimpleUniqueRem.all_objects.all().count() == 0)
 
     def test_unique_together(self):
         obj1 = UniqueTogetherRem.objects.create(category='TestCategory', name='TestName1', value=0)
@@ -78,6 +118,26 @@ class TestSoftRemove(TestCase):
 
         self.assertTrue(UniqueTogetherRem.objects.all().count() == 0)
         self.assertTrue(UniqueTogetherRem.objects.removed().count() == 5)
+        self.assertTrue(UniqueTogetherRem.all_objects.all().count() == 5)
+
+        UniqueTogetherRem.objects.create(category='TestCategory', name='TestName1', value=4)
+
+        self.assertTrue(UniqueTogetherRem.objects.all().count() == 1)
+        self.assertTrue(UniqueTogetherRem.objects.removed().count() == 5)
+        self.assertTrue(UniqueTogetherRem.all_objects.all().count() == 6)
+
+        UniqueTogetherRem.objects.first().delete_fully()
+
+        self.assertTrue(UniqueTogetherRem.objects.all().count() == 0)
+        self.assertTrue(UniqueTogetherRem.objects.removed().count() == 5)
+        self.assertTrue(UniqueTogetherRem.all_objects.all().count() == 5)
+
+        UniqueTogetherRem.objects.all().delete_fully()
+        UniqueTogetherRem.objects.removed().delete_fully()
+
+        self.assertTrue(UniqueTogetherRem.objects.all().count() == 0)
+        self.assertTrue(UniqueTogetherRem.objects.removed().count() == 0)
+        self.assertTrue(UniqueTogetherRem.all_objects.all().count() == 0)
 
     def test_many_unique(self):
         obj = ManyUniqueRem.objects.create(name='TestName1', tag='tag11')
@@ -97,6 +157,26 @@ class TestSoftRemove(TestCase):
 
         self.assertTrue(ManyUniqueRem.objects.all().count() == 0)
         self.assertTrue(ManyUniqueRem.objects.removed().count() == 2)
+        self.assertTrue(ManyUniqueRem.all_objects.all().count() == 2)
+
+        ManyUniqueRem.objects.create(name='TestName3', tag='tag31')
+
+        self.assertTrue(ManyUniqueRem.objects.all().count() == 1)
+        self.assertTrue(ManyUniqueRem.objects.removed().count() == 2)
+        self.assertTrue(ManyUniqueRem.all_objects.all().count() == 3)
+
+        ManyUniqueRem.objects.first().delete_fully()
+
+        self.assertTrue(ManyUniqueRem.objects.all().count() == 0)
+        self.assertTrue(ManyUniqueRem.objects.removed().count() == 2)
+        self.assertTrue(ManyUniqueRem.all_objects.all().count() == 2)
+
+        ManyUniqueRem.objects.all().delete_fully()
+        ManyUniqueRem.objects.removed().delete_fully()
+
+        self.assertTrue(ManyUniqueRem.objects.all().count() == 0)
+        self.assertTrue(ManyUniqueRem.objects.removed().count() == 0)
+        self.assertTrue(ManyUniqueRem.all_objects.all().count() == 0)
 
     def test_many_unique_together(self):
         obj1 = ManyUniqueTogetherRem.objects.create(category='TestCategory', name='TestName1', tag='tag1', value=0)
@@ -136,3 +216,23 @@ class TestSoftRemove(TestCase):
 
         self.assertTrue(ManyUniqueTogetherRem.objects.all().count() == 0)
         self.assertTrue(ManyUniqueTogetherRem.objects.removed().count() == 5)
+        self.assertTrue(ManyUniqueTogetherRem.all_objects.all().count() == 5)
+
+        ManyUniqueTogetherRem.objects.create(category='TestCategory', name='TestName1', tag='tag1', value=4)
+
+        self.assertTrue(ManyUniqueTogetherRem.objects.all().count() == 1)
+        self.assertTrue(ManyUniqueTogetherRem.objects.removed().count() == 5)
+        self.assertTrue(ManyUniqueTogetherRem.all_objects.all().count() == 6)
+
+        ManyUniqueTogetherRem.objects.first().delete_fully()
+
+        self.assertTrue(ManyUniqueTogetherRem.objects.all().count() == 0)
+        self.assertTrue(ManyUniqueTogetherRem.objects.removed().count() == 5)
+        self.assertTrue(ManyUniqueTogetherRem.all_objects.all().count() == 5)
+
+        ManyUniqueTogetherRem.objects.all().delete_fully()
+        ManyUniqueTogetherRem.objects.removed().delete_fully()
+
+        self.assertTrue(ManyUniqueTogetherRem.objects.all().count() == 0)
+        self.assertTrue(ManyUniqueTogetherRem.objects.removed().count() == 0)
+        self.assertTrue(ManyUniqueTogetherRem.all_objects.all().count() == 0)

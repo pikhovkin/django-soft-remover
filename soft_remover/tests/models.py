@@ -3,15 +3,22 @@ from django.db import models
 from soft_remover.models import SoftRemovableModel, SoftRestorableModel
 
 
-class SimpleRem(SoftRemovableModel):
+class TestModelWithDefaultManager(models.Model):
+    all_objects = models.Manager()
+
+    class Meta:
+        abstract = True
+
+
+class SimpleRem(SoftRemovableModel, TestModelWithDefaultManager):
     name = models.CharField(max_length=32)
 
 
-class SimpleUniqueRem(SoftRemovableModel):
+class SimpleUniqueRem(SoftRemovableModel, TestModelWithDefaultManager):
     name = models.CharField(max_length=32, unique=True)
 
 
-class UniqueTogetherRem(SoftRemovableModel):
+class UniqueTogetherRem(SoftRemovableModel, TestModelWithDefaultManager):
     category = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     value = models.PositiveSmallIntegerField()
@@ -20,12 +27,12 @@ class UniqueTogetherRem(SoftRemovableModel):
         unique_together = ('category', 'name', 'remver')
 
 
-class ManyUniqueRem(SoftRemovableModel):
+class ManyUniqueRem(SoftRemovableModel, TestModelWithDefaultManager):
     name = models.CharField(max_length=32, unique=True)
     tag = models.CharField(max_length=32, unique=True)
 
 
-class ManyUniqueTogetherRem(SoftRemovableModel):
+class ManyUniqueTogetherRem(SoftRemovableModel, TestModelWithDefaultManager):
     category = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     tag = models.CharField(max_length=32)
@@ -35,15 +42,15 @@ class ManyUniqueTogetherRem(SoftRemovableModel):
         unique_together = (('category', 'name', 'remver'), ('category', 'tag', 'remver'))
 
 
-class SimpleRes(SoftRestorableModel):
+class SimpleRes(SoftRestorableModel, TestModelWithDefaultManager):
     name = models.CharField(max_length=32)
 
 
-class SimpleUniqueRes(SoftRestorableModel):
+class SimpleUniqueRes(SoftRestorableModel, TestModelWithDefaultManager):
     name = models.CharField(max_length=32, unique=True)
 
 
-class UniqueTogetherRes(SoftRestorableModel):
+class UniqueTogetherRes(SoftRestorableModel, TestModelWithDefaultManager):
     category = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     value = models.PositiveSmallIntegerField()
@@ -52,12 +59,12 @@ class UniqueTogetherRes(SoftRestorableModel):
         unique_together = ('category', 'name')
 
 
-class ManyUniqueRes(SoftRestorableModel):
+class ManyUniqueRes(SoftRestorableModel, TestModelWithDefaultManager):
     name = models.CharField(max_length=32, unique=True)
     tag = models.CharField(max_length=32, unique=True)
 
 
-class ManyUniqueTogetherRes(SoftRestorableModel):
+class ManyUniqueTogetherRes(SoftRestorableModel, TestModelWithDefaultManager):
     category = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     tag = models.CharField(max_length=32)
@@ -67,14 +74,14 @@ class ManyUniqueTogetherRes(SoftRestorableModel):
         unique_together = (('category', 'name'), ('category', 'tag'))
 
 
-class RestoreTogetherRes(SoftRestorableModel):
+class RestoreTogetherRes(SoftRestorableModel, TestModelWithDefaultManager):
     name = models.CharField(max_length=32)
 
     class MetaSoftRemover:
         restore_together = ('name',)
 
 
-class ManyRestoreTogetherRes(SoftRestorableModel):
+class ManyRestoreTogetherRes(SoftRestorableModel, TestModelWithDefaultManager):
     category = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     value = models.PositiveSmallIntegerField()

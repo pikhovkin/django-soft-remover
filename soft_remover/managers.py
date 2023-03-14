@@ -13,6 +13,9 @@ class SoftRemovableQuerySet(QuerySet):
         for obj in self:
             obj.delete()
 
+    def delete_fully(self):
+        super().delete()
+
 
 class SoftRestorableQuerySet(SoftRemovableQuerySet):
     def restore(self):
