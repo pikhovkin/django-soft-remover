@@ -1,6 +1,7 @@
 from itertools import chain
 
 from django.db import transaction, models
+from django.db.models.constraints import BaseConstraint, UniqueConstraint
 from django.utils.translation import gettext_lazy as _
 
 from .managers import SoftRemovableManager, SoftRestorableManager
@@ -33,9 +34,12 @@ class BaseSoftRemovableModel(models.Model):
                 return set()
             if isinstance(fields[0], str):
                 return {tuple(fields)}
+            elif isinstance(fields[0], BaseConstraint):
+                return {c.fields for c in filter(lambda c: isinstance(c, UniqueConstraint), fields)}
             return set(fields)
 
         fieldset = _transform_unique_fields(self._meta.unique_together)
+        fieldset |= _transform_unique_fields(self._meta.constraints)
         fieldset |= _transform_unique_fields(getattr(getattr(self, 'MetaSoftRemover', None), 'restore_together', []))
         fieldset |= {(f.name,) for f in self._meta.fields if f.unique and not f.primary_key}
         if isinstance(self, SoftRemovableModel):
